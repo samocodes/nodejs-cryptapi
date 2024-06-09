@@ -1,0 +1,48 @@
+# Node modules
+node_modules
+.pnp
+.pnp.js
+
+# pnpm
+.pnpm-store
+.pnpm-debug.log
+.pnpmfile.cjs
+.pnpmfile.js
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.swp
+
+# Source files
+src
+
+# Configuration files
+*.config.js
+*.env
+*.local
+
+# Test files
+test
+tests
+*.spec.js
+*.test.js
+
+# Documentation
+docs
+*.md
+
+# IDE files
+.vscode
+.idea
+
+# Other files and directories you don't want to publish
+.DS_Store
+*.iml
+*.lock
+
+# Ignore everything except the dist folder
+*
+!dist
