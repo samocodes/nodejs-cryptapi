@@ -1,23 +1,22 @@
 {
   "name": "@samocodes/cryptapi",
-  "version": "1.0.1",
-  "description": "CryptAPI's Library for NodeJS",
+  "version": "1.0.2",
+  "description": "Node.js library for integrating with CryptAPI's payment gateway.",
   "author": "Samir <samirdiff@proton.me>",
   "license": "MIT",
   "homepage": "https://cryptapi.io",
-  "scripts": {
-    "test": "jest",
-    "build": "tsup",
-    "lint": "tsc"
-  },
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/samocodes/nodejs-cryptapi.git"
   },
-  "type": "commonjs",
+  "scripts": {
+    "test": "jest",
+    "build": "tsup",
+    "lint": "tsc --noEmit"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "keywords": [
     "crypto",
     "cryptocurrency",
@@ -25,14 +24,21 @@
     "bitcoin",
     "litecoin",
     "ethereum",
-    "bitcoin cash",
+    "bitcoin-cash",
     "cryptocurrencies",
     "polygon",
     "tron",
-    "binance smart chain",
+    "binance-smart-chain",
     "erc20",
     "bep20"
   ],
+  "bugs": {
+    "url": "https://github.com/samocodes/nodejs-cryptapi/issues"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "type": "commonjs",
   "devDependencies": {
     "@total-typescript/ts-reset": "^0.5.1",
     "@types/jest": "^29.5.12",
@@ -41,5 +47,8 @@
     "ts-jest": "^29.1.4",
     "tsup": "^8.1.0",
     "typescript": "^5.4.5"
-  }
+  },
+  "files": [
+    "dist/**/*"
+  ]
 }

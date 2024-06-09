@@ -46,3 +46,4 @@ docs
 # Ignore everything except the dist folder
 *
 !dist
+!dist/**/*.d.ts
