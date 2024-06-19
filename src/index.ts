@@ -31,30 +31,30 @@ export class CryptAPI {
   public static readonly baseURL = "https://api.cryptapi.io";
 
   /**
- * Creates an instance of the CryptAPI class.
- *
- * This constructor initializes a new instance of the CryptAPI class with the specified parameters.
- * It validates the provided cryptocurrency coin against the supported coins fetched from the service.
- *
- * @param {string} coin - The cryptocurrency you wish to use (e.g., 'btc', 'eth').
- * @param {string} address - Your own cryptocurrency address to receive payments.
- * @param {string} callbackUrl - The webhook URL to receive payment notifications.
- * @param {Record<string, string | number>} [params={}] - Any additional parameters to send to identify the payment.
- * @param {CryptAPIParams} [caParams={}] - Custom parameters that will be passed to CryptAPI.
- *
- * @throws {Error} - If the provided cryptocurrency coin is not supported.
- *
- * @example
- * const cryptAPI = new CryptAPI(
- *   'btc',
- *   'your-bitcoin-address',
- *   'https://your-webhook-url.com/callback',
- *   { orderId: '12345' },
- *   { customParam1: 'value1' }
- * );
- *
- * @class
- */
+   * Creates an instance of the CryptAPI class.
+   *
+   * This constructor initializes a new instance of the CryptAPI class with the specified parameters.
+   * It validates the provided cryptocurrency coin against the supported coins fetched from the service.
+   *
+   * @param {string} coin - The cryptocurrency you wish to use (e.g., 'btc', 'eth').
+   * @param {string} address - Your own cryptocurrency address to receive payments.
+   * @param {string} callbackUrl - The webhook URL to receive payment notifications.
+   * @param {Record<string, string | number>} [params={}] - Any additional parameters to send to identify the payment.
+   * @param {CryptAPIParams} [caParams={}] - Custom parameters that will be passed to CryptAPI.
+   *
+   * @throws {Error} - If the provided cryptocurrency coin is not supported.
+   *
+   * @example
+   * const cryptAPI = new CryptAPI(
+   *   'btc',
+   *   'your-bitcoin-address',
+   *   'https://your-webhook-url.com/callback',
+   *   { orderId: '12345' },
+   *   { customParam1: 'value1' }
+   * );
+   *
+   * @class
+   */
   constructor(
     coin: string,
     address: string,
@@ -76,25 +76,25 @@ export class CryptAPI {
   }
 
   /**
- * Fetches the list of supported coins.
- *
- * This static method retrieves information about supported cryptocurrencies from the service,
- * processes the data, and returns a record of coin tickers and their respective details.
- *
- * @returns {Promise<SupportedCoins | null>} - A record of supported coin tickers and their details, or null if an error occurs.
- *
- * @throws {Error} - If there is an issue fetching the service information.
- *
- * @example
- * const supportedCoins = await CryptAPI.fetchSupportedCoins();
- * if (supportedCoins) {
- *   console.log("Supported coins:", supportedCoins);
- * } else {
- *   console.log("Failed to fetch supported coins.");
- * }
- *
- * @static
- */
+   * Fetches the list of supported coins.
+   *
+   * This static method retrieves information about supported cryptocurrencies from the service,
+   * processes the data, and returns a record of coin tickers and their respective details.
+   *
+   * @returns {Promise<SupportedCoins | null>} - A record of supported coin tickers and their details, or null if an error occurs.
+   *
+   * @throws {Error} - If there is an issue fetching the service information.
+   *
+   * @example
+   * const supportedCoins = await CryptAPI.fetchSupportedCoins();
+   * if (supportedCoins) {
+   *   console.log("Supported coins:", supportedCoins);
+   * } else {
+   *   console.log("Failed to fetch supported coins.");
+   * }
+   *
+   * @static
+   */
   static async fetchSupportedCoins(): Promise<SupportedCoins | null> {
     let info;
     try {
@@ -155,33 +155,34 @@ export class CryptAPI {
       }
     }
 
-    const { address_in } = (
-      await CryptAPI.makeRequest<CryptAddress>("create", this.coin, {
+    const { address_in } = await CryptAPI.makeRequest<CryptAddress>(
+      "create",
+      this.coin,
+      {
         ...this.caParams,
         callback: encodeURI(cbUrl.toString()),
         address: this.address,
-      })
+      },
     );
 
     this.paymentAddress = address_in;
     return address_in;
   }
 
-
   /**
- * Checks the payment logs.
- *
- * This method verifies that the `coin` and `callbackUrl` are set, constructs the callback URL with
- * any provided parameters, and makes a request to fetch the payment logs.
- *
- * @returns {Promise<PaymentLogs>} - The payment logs.
- *
- * @throws {Error} - If `coin` or `callbackUrl` is not set.
- *
- * @example
- * const logs = await cryptAPI.checkLogs();
- * console.log("Payment logs:", logs);
- */
+   * Checks the payment logs.
+   *
+   * This method verifies that the `coin` and `callbackUrl` are set, constructs the callback URL with
+   * any provided parameters, and makes a request to fetch the payment logs.
+   *
+   * @returns {Promise<PaymentLogs>} - The payment logs.
+   *
+   * @throws {Error} - If `coin` or `callbackUrl` is not set.
+   *
+   * @example
+   * const logs = await cryptAPI.checkLogs();
+   * console.log("Payment logs:", logs);
+   */
   async checkLogs(): Promise<PaymentLogs> {
     if (!this.coin || !this.callbackUrl) {
       throw new Error("Coin or callback URL not set");
@@ -206,6 +207,8 @@ export class CryptAPI {
    * This method verifies that the `coin` and `address` are set, and makes a request to fetch a QR code
    * for the specified value and size.
    *
+   * @param {string} coin - the cryptocurrency you wish to use
+   * @param {string} address - the crypto address you want qr for
    * @param {number | null} value - The value to include in the QR code (optional).
    * @param {number} [size=512] - The size of the QR code (default is 512).
    * @returns {Promise<GenerateQR>} - The generated QR code.
@@ -213,22 +216,19 @@ export class CryptAPI {
    * @throws {Error} - If `coin` or `address` is not set.
    *
    * @example
-   * const qrCode = await cryptAPI.fetchQRCode(100, 256);
+   * const qrCode = await CryptAPI.fetchQRCode("btc", "ADDRESS", 100, 256);
    * console.log("QR Code:", qrCode);
    */
-  async fetchQRCode(value: number | null, size: number = 512): Promise<GenerateQR> {
-    if (!this.coin) {
-      throw new Error("Coin not set");
-    }
-
-    if (!this.address) {
-      throw new Error("Address not set");
-    }
-
-    return await CryptAPI.makeRequest<GenerateQR>("qrcode", this.coin, {
+  static async fetchQRCode(
+    coin: string,
+    address: string,
+    value: number | null,
+    size: number = 512,
+  ): Promise<GenerateQR> {
+    return await CryptAPI.makeRequest<GenerateQR>("qrcode", coin, {
       value,
       size,
-      address: this.paymentAddress,
+      address,
     });
   }
 
@@ -247,10 +247,16 @@ export class CryptAPI {
    *
    * @static
    */
-  static async fetchServiceInfo(prices: boolean = false): Promise<ServiceInformation<typeof prices>> {
-    return await this.makeRequest<ServiceInformation<typeof prices>>("info", undefined, {
-      prices: prices ? 1 : 0,
-    });
+  static async fetchServiceInfo(
+    prices: boolean = false,
+  ): Promise<ServiceInformation<typeof prices>> {
+    return await this.makeRequest<ServiceInformation<typeof prices>>(
+      "info",
+      undefined,
+      {
+        prices: prices ? 1 : 0,
+      },
+    );
   }
 
   /**
@@ -273,7 +279,7 @@ export class CryptAPI {
   static async fetchEstimatedFees(
     coin: string,
     addresses: number = 1,
-    priority: Priority = "default"
+    priority: Priority = "default",
   ): Promise<EstimatedFees> {
     return await this.makeRequest<EstimatedFees>("estimate", coin, {
       addresses,
@@ -298,13 +304,16 @@ export class CryptAPI {
    *
    * @static
    */
-  static async fetchConversion(coin: string, value: number, from: string): Promise<Conversion> {
+  static async fetchConversion(
+    coin: string,
+    value: number,
+    from: string,
+  ): Promise<Conversion> {
     return await this.makeRequest<Conversion>("convert", coin, {
       value,
       from,
     });
   }
-
 
   private static async makeRequest<T>(
     endpoint: string,

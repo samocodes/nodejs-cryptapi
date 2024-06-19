@@ -35,7 +35,7 @@ const cryptAPI = new CryptAPI(
   "your-bitcoin-address", // Your own crypto address
   "https://your-webhook-url.com/callback", // Webhook URL
   { orderId: 12345 }, // Additional parameters
-  { customParam1: "value1" } // Custom CryptAPI parameters
+  { customParam1: "value1" }, // Custom CryptAPI parameters
 );
 
 async function main() {
@@ -43,13 +43,18 @@ async function main() {
     const address = await cryptAPI.createAddress();
     console.log("Payment address:", address);
 
-    const qrCode = await cryptAPI.fetchQRCode(100, 256);
-    console.log("QR Code:", qrCode);
-
     const logs = await cryptAPI.checkLogs();
     console.log("Payment logs:", logs);
 
     // static methods
+    const qrCode = await CryptAPI.fetchQRCode(
+      "btc",
+      "crypto-address",
+      100,
+      256,
+    );
+    console.log("QR Code:", qrCode);
+
     const serviceInfo = await CryptAPI.fetchServiceInfo(true);
     console.log("Service Information:", serviceInfo);
 
@@ -98,7 +103,7 @@ Creates a new address to receive payments.
 async createAddress(): Promise<string>;
 ```
 
-###### `fetchQRCode(value: number | null, size: number = 512)`
+###### `fetchQRCode(coin: string, address: string, value: number | null, size: number = 512)`
 
 Fetches a QR code for the specified value and size.
 

@@ -7,6 +7,7 @@ export default defineConfig({
   splitting: false,
   sourcemap: false,
   clean: true,
+  minify: "terser",
   esbuildOptions: (options) => {
     options.platform = "node";
   },

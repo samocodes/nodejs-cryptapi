@@ -56,19 +56,13 @@ test("Test getting logs", async () => {
 });
 
 test("Test fetching QRCode", async () => {
-  const ca = new CryptAPI(
+  const qrCode = await CryptAPI.fetchQRCode(
     "polygon_matic",
     "0xA6B78B56ee062185E405a1DDDD18cE8fcBC4395d",
-    callbackUrl,
-    {},
-    {
-      convert: 1,
-      multi_chain: 1,
-    },
+    1,
+    300,
   );
 
-  await ca.createAddress();
-  const qrCode = await ca.fetchQRCode(1, 300);
   expect(qrCode !== null).toBe(true);
 });
 
