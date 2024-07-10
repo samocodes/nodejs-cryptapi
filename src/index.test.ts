@@ -31,27 +31,14 @@ test("Test generating address", async () => {
     {
       multi_chain: 1,
       convert: 1,
-    },
+    }
   );
   const address = await r.createAddress();
   expect(typeof address).toBe("string");
 });
 
 test("Test getting logs", async () => {
-  const ca = new CryptAPI(
-    "polygon_matic",
-    "0xA6B78B56ee062185E405a1DDDD18cE8fcBC4395d",
-    callbackUrl,
-    {
-      order_id: 12345,
-    },
-    {
-      convert: 1,
-      multi_chain: 1,
-    },
-  );
-
-  const logs = await ca.checkLogs();
+  const logs = await CryptAPI.fetchLogs("polygon_matic", callbackUrl);
   expect(logs !== null).toBe(true);
 });
 
@@ -60,7 +47,7 @@ test("Test fetching QRCode", async () => {
     "polygon_matic",
     "0xA6B78B56ee062185E405a1DDDD18cE8fcBC4395d",
     1,
-    300,
+    300
   );
 
   expect(qrCode !== null).toBe(true);
@@ -70,7 +57,7 @@ test("Test fetching estimated fees", async () => {
   const estimate = await CryptAPI.fetchEstimatedFees(
     "polygon_matic",
     1,
-    "default",
+    "default"
   );
   expect(estimate !== null).toBe(true);
 });
